@@ -165,6 +165,8 @@ function get_result(p::Point)::Float64
     return res
 end
 
+#TESTING
+
 #Target function
 f(x, y) = 30x + 40y
 
@@ -176,8 +178,6 @@ l1::LineEq = get_lineEq(a)
 l2::LineEq = get_lineEq(b)
 l3::LineEq = get_lineEq(c)
 
-
-#   TESTING
 inter_l1_l2 = get_intersection(l1, l2)
 inter_l1_l3 = get_intersection(l1, l3)
 inter_l2_l3 = get_intersection(l2, l3)
@@ -233,97 +233,4 @@ println(" ")
 for p in possibilites
     println(string(p) * " -> " * string(round(get_result(p), digits=3)))
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# println(z[1])
-
-# #Target function
-# f(x, y) = 8x + 9y
-
-# a::Constraint = Constraint(2, 5, 12)
-# b::Constraint = Constraint(10, 10, 45)
-# c::Constraint = Constraint(50, 5, 150)
-# d::Constraint = Constraint(5, 50, 100)
-
-
-# l1::LineEq = get_lineEq(a)
-# l2::LineEq = get_lineEq(b)
-# l3::LineEq = get_lineEq(c)
-# l4::LineEq = get_lineEq(d)
-
-
-# #   TESTING
-# inter_l1_l2 = get_intersection(l1, l2)
-# inter_l1_l3 = get_intersection(l1, l3)
-# inter_l1_l4 = get_intersection(l1, l4)
-# inter_l2_l3 = get_intersection(l2, l3)
-# inter_l2_l4 = get_intersection(l2, l4)
-# inter_l3_l4 = get_intersection(l3, l4)
-
-
-
-# constraints = [a, b, c, d]
-
-# # targets_to_check = []
-# # for i in constraints
-
-# #     push!(targets_to_check, getproperty(i, :w))
-# # end
-
-# # println(targets_to_check)
-
-
-# # println(constraints)
-# intersections = [inter_l1_l2, inter_l1_l3, inter_l1_l4, inter_l2_l3, inter_l2_l4, inter_l3_l4]
-
-
-# # println(lines)
-# # println(intersections)
-
-
-# z = check_constraints(constraints, intersections)
-
-
-
-
-# println(z[1])
-
-
-# shot_at_target = f(getproperty(z[1], :x), getproperty(z[1], :y))
-
-# print("LE RÉSULTAT EST: ")
-# println(shot_at_target)
 
