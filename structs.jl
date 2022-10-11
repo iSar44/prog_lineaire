@@ -20,6 +20,7 @@ mutable struct LineEq
     b::Float64
     x_intercept::Point
     y_intercept::Point
+    LineEq() = new()
     LineEq(a, b) = new(round(a, digits=3), round(b, digits=3), Point(), Point(0, round(b, digits=3)))
 end
 
