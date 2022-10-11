@@ -190,9 +190,9 @@ end
 #Target function
 f(x, y) = 30x + 40y
 
-a::Constraint = Constraint(0, 9, 40)
+a::Constraint = Constraint(4, 9, 40)
 b::Constraint = Constraint(5, 5, 25)
-c::Constraint = Constraint(10, 0, 30)
+c::Constraint = Constraint(10, 3, 30)
 # a::Constraint = Constraint(1, 2, 14)
 # b::Constraint = Constraint(10, 10, 100)
 # c::Constraint = Constraint(20, 10, 190)
@@ -202,9 +202,9 @@ l2::LineEq = get_lineEq(b)
 l3::LineEq = get_lineEq(c)
 
 
-t1 = (l1, l2, a, b)
-t2 = (l1, l3, a, c)
-t3 = (l2, l3, b, c)
+t1::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l2, a, b)
+t2::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l3, a, c)
+t3::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l3, b, c)
 
 # println(line_intercept(tup))
 # exit()
