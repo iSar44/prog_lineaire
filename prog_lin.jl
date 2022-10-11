@@ -1,9 +1,16 @@
 include("structs.jl")
 
-# using Plots
 using .TP_objets
 
+"""
 
+Function that transforms a given constraint into 
+a structure representing the general form of a linear equation (i.e.
+y = ax + b)
+
+# Arguments
+-  `c::Constraint`: a given object of type Constraint
+"""
 function get_lineEq(c::Constraint)::LineEq
 
     line = LineEq()
@@ -22,102 +29,115 @@ function get_lineEq(c::Constraint)::LineEq
 
         res = round(arr[2] / arr[1], digits=1)
 
-        x::Point = Point(res, 0)
-        line.x_intercept = x
+        line.x_intercept = Point(res, 0)
+        return line
+
+    elseif getproperty(c, :u) == 0 && getproperty(c, :v) != 0
+
+        # Horizontal line
+        b = getproperty(c, :w) / getproperty(c, :v)
+        line.y_intercept = Point(a, b)
+
+
+    elseif getproperty(c, :u) != 0 && getproperty(c, :v) == 0
+
+        # Vertical line
+        a = getproperty(c, :w) / getproperty(c, :u)
+        line.x_intercept = Point(a, b)
+
     else
 
-        if getproperty(c, :u) == 0
+        println("Une erreur est survenue. Le U ou le V de votre contrainte doit obligatoirement être non nul!")
+        exit(1)
 
-            # Horizontal line
-
-            b = getproperty(c, :w) / getproperty(c, :v)
-            y_axis::Point = Point(a, b)
-
-            line.y_intercept = y_axis
-
-
-        else
-
-            #Vertical line
-
-            # a = getproperty(c, :u)
-            a = getproperty(c, :w) / getproperty(c, :u)
-            x_axis::Point = Point(a, b)
-
-            line.x_intercept = x_axis
-        end
-
-        line.a = a
-        line.b = b
     end
+
+    line.a = a
+    line.b = b
 
     return line
-
 end
 
 
-function get_intersection(l1::LineEq, l2::LineEq)::Point
+function line_intercept(tup::Tuple{LineEq,LineEq,Constraint,Constraint})::Point
 
-    x(y) = getproperty(l2, :a) * y + getproperty(l2, :b)
-    y(x) = getproperty(l2, :a) * x + getproperty(l2, :b)
-    res::Float64 = 0
+    isNotSpecialCase::Bool = false
 
-    if !(isdefined(l1, :x_intercept))
+    for i in tup
 
-        res = x(getproperty(l1, :b))
-
-        if res < 0
-            res = ((-1) * getproperty(l1, :b) + getproperty(l2, :b)) / ((-1) * getproperty(l2, :a))
+        if typeof(i) == LineEq
+            if isdefined(i, :x_intercept) && isdefined(i, :y_intercept)
+                isNotSpecialCase = true
+            else
+                isNotSpecialCase = false
+                break
+            end
+        else
+            break
         end
-
-        intersection = Point(round(res, digits=3), round(getproperty(l1, :b), digits=3))
-
-
-    elseif !(isdefined(l1, :y_intercept))
-
-        res = y(getproperty(l1, :a))
-        intersection = Point(round(getproperty(l1, :a), digits=3), round(res, digits=3))
-
-    elseif !(isdefined(l2, :x_intercept))
-
-        y_value = x(getproperty(l1, :b))
-
-        x_value = (getproperty(l2, :b) + (-1) * getproperty(l1, :b)) / getproperty(l1, :a)
-
-        intersection = Point(round(x_value, digits=2), round(y_value, digits=2))
-
-
-    elseif !(isdefined(l2, :y_intercept))
-
-        res = y(getproperty(l1, :a))
-
-        # res_x = x(getproperty(l1, :a))
-        # res_y = y(res_x)
-
-        if res < 0
-            res *= -1
-        end
-
-        intersection = Point(round(getproperty(l2, :a), digits=3), round(res, digits=3))
-
-        # intersection = Point(round(res_x, digits=3), round(res_y, digits=3))
-
-    else
-
-        x_axis::Float64 = (getproperty(l2, :b) - getproperty(l1, :b)) / (getproperty(l1, :a) - getproperty(l2, :a))
-
-        f(x) = getproperty(l1, :a) * x + getproperty(l1, :b)
-
-        y_axis::Float64 = f(x_axis)
-
-        intersection = Point(round(x_axis, digits=3), round(y_axis, digits=3))
-
 
     end
 
-    return intersection
+    if isNotSpecialCase
 
+        a = getproperty(tup[1], :a)
+        b = getproperty(tup[1], :b)
+        a_prime = getproperty(tup[2], :a)
+        b_prime = getproperty(tup[2], :b)
+
+        #GENERAL SOLUTION
+        pX::Float64 = (b_prime - b) / (a - a_prime)
+
+        if pX > 0
+
+            y_for_l1 = a * pX + b
+            y_for_l2 = a_prime * pX + b_prime
+
+            if y_for_l1 == y_for_l2
+
+                pY::Float64 = y_for_l1
+                return Point(round(pX, digits=3), round(pY, digits=3))
+
+            end
+        end
+
+    else
+
+        l1 = tup[1]
+        l2 = tup[2]
+
+        c1 = tup[3]
+        c2 = tup[4]
+
+        if !(isdefined(l1, :x_intercept))
+
+            numerator = c2.w + (-1) * (c1.w * c2.v / c1.v)
+            denom = c2.u
+
+            res::Float64 = numerator / denom
+
+            return Point(round(res, digits=3), round(l1.b, digits=3))
+
+        end
+
+        if !(isdefined(l2, :x_intercept))
+
+            return Point(round((l2.b + ((-1) * l1.b)) / l1.a, digits=3), round(l2.b, digits=3))
+        end
+
+        if !(isdefined(l1, :y_intercept))
+
+            return Point(l1.a, round(l2.a * l1.a + l2.b, digits=3))
+        end
+
+        if !(isdefined(l2, :y_intercept))
+
+            return Point(l2.a, round(l1.a * l2.a + l1.b, digits=3))
+        end
+
+    end
 end
+
 
 function check_constraints(arr_constraints, arr_points)::Vector{Point}
 
@@ -170,20 +190,36 @@ end
 #Target function
 f(x, y) = 30x + 40y
 
-a::Constraint = Constraint(4, 9, 40)
+a::Constraint = Constraint(0, 9, 40)
 b::Constraint = Constraint(5, 5, 25)
-c::Constraint = Constraint(10, 3, 30)
+c::Constraint = Constraint(10, 0, 30)
+# a::Constraint = Constraint(1, 2, 14)
+# b::Constraint = Constraint(10, 10, 100)
+# c::Constraint = Constraint(20, 10, 190)
 
 l1::LineEq = get_lineEq(a)
 l2::LineEq = get_lineEq(b)
 l3::LineEq = get_lineEq(c)
 
-inter_l1_l2 = get_intersection(l1, l2)
-inter_l1_l3 = get_intersection(l1, l3)
-inter_l2_l3 = get_intersection(l2, l3)
+
+t1 = (l1, l2, a, b)
+t2 = (l1, l3, a, c)
+t3 = (l2, l3, b, c)
+
+# println(line_intercept(tup))
+# exit()
+
+# inter_l1_l2 = get_intersection(l1, l2)
+# inter_l1_l3 = get_intersection(l1, l3)
+# inter_l2_l3 = get_intersection(l2, l3)
+
+# line_intercept(t1)
+
+line_intercept(t3)
 
 constraints = [a, b, c]
-intersections = [inter_l1_l2, inter_l1_l3, inter_l2_l3]
+intersections = [line_intercept(t1), line_intercept(t2), line_intercept(t3)]
+# intersections = [inter_l1_l2, inter_l1_l3, inter_l2_l3]
 
 # f(x, y) = 315x + 205y - 10
 
@@ -233,4 +269,6 @@ println(" ")
 for p in possibilites
     println(string(p) * " -> " * string(round(get_result(p), digits=3)))
 end
+
+
 
