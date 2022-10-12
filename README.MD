@@ -28,11 +28,11 @@ t1::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l2, a, b)
 
 ```
 
-### 4) Initialisez un tableau dans lequel vous allez appeler la fonction line_intercept() en lui passant en paramètre votre tuple
+### 4) Initialisez un tableau dans lequel vous allez appeler la fonction line_intersect() en lui passant en paramètre votre tuple
 
 ```julia
 
-intersections = [line_intercept(t1)]
+intersects = [line_intersect(t1)]
 
 ```
 
