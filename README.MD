@@ -40,6 +40,6 @@ intersects = [line_intersect(t1)]
 
 ```bash
 
-$ julia prog_lin.jl
+$ julia main.jl
 
 ```
