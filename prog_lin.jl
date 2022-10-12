@@ -88,17 +88,14 @@ function line_intercept(tup::Tuple{LineEq,LineEq,Constraint,Constraint})::Point
         #GENERAL SOLUTION
         pX::Float64 = (b_prime - b) / (a - a_prime)
 
-        if pX > 0
+        y_for_l1 = round(a * pX + b, digits=3)
+        y_for_l2 = round(a_prime * pX + b_prime, digits=3)
 
-            y_for_l1 = a * pX + b
-            y_for_l2 = a_prime * pX + b_prime
+        if y_for_l1 == y_for_l2
 
-            if y_for_l1 == y_for_l2
+            pY::Float64 = y_for_l1
+            return Point(round(pX, digits=3), round(pY, digits=3))
 
-                pY::Float64 = y_for_l1
-                return Point(round(pX, digits=3), round(pY, digits=3))
-
-            end
         end
 
     else
@@ -185,74 +182,124 @@ function get_result(p::Point)::Float64
     return res
 end
 
-#TESTING
+#Exo - Glacier 
 
 #Target function
-f(x, y) = 30x + 40y
+# f(x, y) = 30x + 40y
 
-a::Constraint = Constraint(4, 9, 40)
-b::Constraint = Constraint(5, 5, 25)
-c::Constraint = Constraint(10, 3, 30)
-# a::Constraint = Constraint(1, 2, 14)
-# b::Constraint = Constraint(10, 10, 100)
-# c::Constraint = Constraint(20, 10, 190)
-
-l1::LineEq = get_lineEq(a)
-l2::LineEq = get_lineEq(b)
-l3::LineEq = get_lineEq(c)
-
-
-t1::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l2, a, b)
-t2::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l3, a, c)
-t3::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l3, b, c)
-
-# println(line_intercept(tup))
-# exit()
-
-# inter_l1_l2 = get_intersection(l1, l2)
-# inter_l1_l3 = get_intersection(l1, l3)
-# inter_l2_l3 = get_intersection(l2, l3)
-
-# line_intercept(t1)
-
-line_intercept(t3)
-
-constraints = [a, b, c]
-intersections = [line_intercept(t1), line_intercept(t2), line_intercept(t3)]
-# intersections = [inter_l1_l2, inter_l1_l3, inter_l2_l3]
-
-# f(x, y) = 315x + 205y - 10
-
-# a::Constraint = Constraint(1, 2, 14)
-# b::Constraint = Constraint(10, 10, 100)
-# c::Constraint = Constraint(20, 10, 190)
-# d::Constraint = Constraint(4, 0, 37)
-# e::Constraint = Constraint(0, 1, 6)
-# gf::Constraint = Constraint(-4, 1, 4)
-# g::Constraint = Constraint(-5, -5, -10)
-# h::Constraint = Constraint(-25, -15, -40)
-# i::Constraint = Constraint(-1, 0, 0)
-# j::Constraint = Constraint(0, -1, 0)
+# a::Constraint = Constraint(4, 9, 40)
+# b::Constraint = Constraint(5, 5, 25)
+# c::Constraint = Constraint(10, 3, 30)
 
 # l1::LineEq = get_lineEq(a)
 # l2::LineEq = get_lineEq(b)
 # l3::LineEq = get_lineEq(c)
-# l4::LineEq = get_lineEq(d)
-# l5::LineEq = get_lineEq(e)
-# l6::LineEq = get_lineEq(gf)
-# l7::LineEq = get_lineEq(g)
-# l8::LineEq = get_lineEq(h)
-# l9::LineEq = get_lineEq(i)
-# l10::LineEq = get_lineEq(j)
 
 
-# #   TESTING
-# inter_l1_l2 = get_intersection(l1, l2)
-# inter_l1_l3 = get_intersection(l1, l3)
-# inter_l2_l3 = get_intersection(l2, l3)
+# t1::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l2, a, b)
+# t2::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l3, a, c)
+# t3::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l3, b, c)
 
 # constraints = [a, b, c]
-# intersections = [inter_l1_l2, inter_l1_l3, inter_l2_l3]
+# intersections = [line_intercept(t1), line_intercept(t2), line_intercept(t3)]
+
+
+#1er exercice
+f(x, y) = 315x + 205y - 10
+
+# #2ème exercice
+# f(x, y) = 4x + 3y + 25
+
+a::Constraint = Constraint(1, 2, 14)
+b::Constraint = Constraint(10, 10, 100)
+c::Constraint = Constraint(20, 10, 190)
+d::Constraint = Constraint(4, 0, 37)
+e::Constraint = Constraint(0, 1, 6)
+gf::Constraint = Constraint(-4, 1, 4)
+g::Constraint = Constraint(-5, -5, -10)
+h::Constraint = Constraint(-25, -15, -40)
+
+
+l1::LineEq = get_lineEq(a)
+l2::LineEq = get_lineEq(b)
+l3::LineEq = get_lineEq(c)
+l4::LineEq = get_lineEq(d)
+l5::LineEq = get_lineEq(e)
+l6::LineEq = get_lineEq(gf)
+l7::LineEq = get_lineEq(g)
+l8::LineEq = get_lineEq(h)
+
+
+constraints = [a, b, c, d, e, gf, g, h]
+
+# L1 w/ the rest
+t1::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l2, a, b)
+t2::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l3, a, c)
+t3::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l4, a, d)
+t4::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l5, a, e)
+t5::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l6, a, gf)
+t6::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l7, a, g)
+t7::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l8, a, h)
+# L2 w/ the rest
+t8::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l3, b, c)
+t9::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l4, b, d)
+t10::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l5, b, e)
+t11::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l6, b, gf)
+t12::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l7, b, g)
+t13::Tuple{LineEq,LineEq,Constraint,Constraint} = (l2, l8, b, h)
+#L3 w/ the rest
+t14::Tuple{LineEq,LineEq,Constraint,Constraint} = (l3, l4, c, d)
+t15::Tuple{LineEq,LineEq,Constraint,Constraint} = (l3, l5, c, e)
+t16::Tuple{LineEq,LineEq,Constraint,Constraint} = (l3, l6, c, gf)
+t17::Tuple{LineEq,LineEq,Constraint,Constraint} = (l3, l7, c, g)
+t18::Tuple{LineEq,LineEq,Constraint,Constraint} = (l3, l8, c, h)
+#L4 w/ the rest
+t19::Tuple{LineEq,LineEq,Constraint,Constraint} = (l4, l5, d, e)
+t20::Tuple{LineEq,LineEq,Constraint,Constraint} = (l4, l6, d, gf)
+t21::Tuple{LineEq,LineEq,Constraint,Constraint} = (l4, l7, d, g)
+t22::Tuple{LineEq,LineEq,Constraint,Constraint} = (l4, l8, d, h)
+# L5 w/ rest
+t23::Tuple{LineEq,LineEq,Constraint,Constraint} = (l5, l6, e, gf)
+t24::Tuple{LineEq,LineEq,Constraint,Constraint} = (l5, l7, e, g)
+t25::Tuple{LineEq,LineEq,Constraint,Constraint} = (l5, l8, e, h)
+# L6 w/ rest
+t26::Tuple{LineEq,LineEq,Constraint,Constraint} = (l6, l7, gf, g)
+t27::Tuple{LineEq,LineEq,Constraint,Constraint} = (l6, l8, gf, h)
+# L7 w/ rest
+t28::Tuple{LineEq,LineEq,Constraint,Constraint} = (l7, l8, g, h)
+
+
+
+intersections = [
+    line_intercept(t1),
+    line_intercept(t2),
+    line_intercept(t3),
+    line_intercept(t4),
+    line_intercept(t5),
+    line_intercept(t6),
+    line_intercept(t7),
+    line_intercept(t8),
+    line_intercept(t9),
+    line_intercept(t10),
+    line_intercept(t11),
+    line_intercept(t12),
+    line_intercept(t13),
+    line_intercept(t14),
+    line_intercept(t15),
+    line_intercept(t16),
+    line_intercept(t17),
+    line_intercept(t18),
+    line_intercept(t19),
+    line_intercept(t20),
+    line_intercept(t21),
+    line_intercept(t22),
+    line_intercept(t23),
+    line_intercept(t24),
+    line_intercept(t25),
+    line_intercept(t26),
+    line_intercept(t27),
+    line_intercept(t28),
+]
 
 println("Ci-dessous se trouvent le(s) point(s) d'intersections trouvé(s) par le programme")
 
