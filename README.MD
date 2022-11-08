@@ -2,7 +2,7 @@
 
 ### 1. Définir une fonction à optimiser
 
-Cette fonction doit être du type $f(x,y) = p \cdot x + q \cdot y + r$ (avec $p,q,r \in \R$)
+Cette fonction doit être du type $f(x,y) = p \cdot x + q \cdot y + r$ (avec $p,q,r \in \R $)
 
 ```julia
 f(x, y) = 315x + 205y - 10
