@@ -56,6 +56,7 @@ constraints::Vector{Constraint} = [
 
 
 lines::Vector{LineEq} = []
+intersects::Vector{Point} = []
 
 
 for c in constraints
@@ -64,26 +65,19 @@ end
 
 pairs::Vector{Tuple{LineEq,LineEq,Constraint,Constraint}} = make_pairs(lines, constraints)
 
-
-intersects::Vector{Point} = []
-
 for pair in pairs
     push!(intersects, line_intersect(pair))
 end
 
-# println("Ci-dessous se trouvent le(s) point(s) d'intersections trouvé(s) par le programme")
-
-for i in intersects
-    println(string(i))
-end
 
 possibilites = check_constraints(constraints, intersects)
 
-println(" ")
-println("Le résultat optimisé est obtenu au point du tableau ci-dessous auquel correspond la plus grande valeur: ")
-println(" ")
 
-for p in possibilites
-    println(string(p) * " -> " * string(round(get_result(p), digits=3)))
-end
+println("********************************************************************")
+max_val(possibilites)
+println(" ")
+min_val(possibilites)
+println("********************************************************************")
+
+
 
