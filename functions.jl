@@ -210,12 +210,13 @@ end
 
 # Description
 
-TODO
-
+Given a vector of lines and a vector of constraints, this function returns a vector of pairs of lines between which
+we're trying to find an intersect. We're also adding to each pair their respective constraints so that further down
+the line we can verify if the intersect that was found complies at the very least with its own constraints 
 
 # Argument
-- `arr_lines::Vector{LineEq}`: TODO
-- `arr_constraints::Vector{Constraint}`: TODO
+- `arr_lines::Vector{LineEq}`: a vector containing all the lines that were constructed from the initial constraints
+- `arr_constraints::Vector{Constraint}`: a vector containing all the constraints of a given problem
 
 # Return
 
