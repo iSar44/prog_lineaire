@@ -1,45 +1,46 @@
-# Utilisation
+# Manuel d'utilisateur
 
-### 1) Définir les contraintes sous forme de variables
+1. Définir une fonction à optimiser
 
-```julia
+   ```julia
+   f(x, y) = 315x + 205y - 10
+   ```
 
-a::Contraint = Contraint(u0, v0, w0)
-b::Contraint = Contraint(u1, v1, w0)
+2. Déclarer un tableau de contraintes, dans lequel il faut insérer les diverses contraintes du problème.
 
-```
+   ```julia
+   constraints::Vector{Constraint} = [
+       Constraint(1, 2, 14),
+       Constraint(20, 10, 190),
+       Constraint(4, 0, 37),
+       Constraint(0, 1, 6),
+       Constraint(-4, 1, 4),
+       Constraint(-5, -5, -10),
+       Constraint(-25, -15, -40),
+       Constraint(-1, 0, 0),
+       Constraint(0, -1, 0)
+   ]
+   ```
 
-où uN, vN et wN sont vos valeurs respectives
+   **_Attention:_**
+   Dans le programme, les contraintes sont définies sous la forme:
 
-### 2) Appeler la fonction get_lineEq() qui transformera vos contraintes en structures d'équation linéaire
+   $$
+   u \cdot x + v \cdot y \leqslant w
+   $$
 
-```julia
+   (où u et v sont les coefficients des variables x et y, w est la valeur à respecter de la contrainte)
 
-l1::LineEq = get_lineEq(a)
-l2::LineEq = get_lineEq(b)
+   Si vos contraintes sont sous la forme:
 
-```
+   $$
+   u \cdot x + v \cdot y \geqslant w
+   $$
 
-### 3) Assignez à un tuple vos contraintes et vos équations linéaire
+   Il vous faut multiplier par (-1) les deux côtés de la contraintes et par la suite l'insérer dans le tableau
 
-```julia
-
-t1::Tuple{LineEq,LineEq,Constraint,Constraint} = (l1, l2, a, b)
-
-```
-
-### 4) Initialisez un tableau dans lequel vous allez appeler la fonction line_intersect() en lui passant en paramètre votre tuple
-
-```julia
-
-intersects = [line_intersect(t1)]
-
-```
-
-### 5) Finalement, il ne vous reste plus qu'à sauvegarder le fichier et l'exécuter depuis la ligne de commande
+3. Lancer le programme
 
 ```bash
-
-$ julia main.jl
-
+julia main.jl
 ```
