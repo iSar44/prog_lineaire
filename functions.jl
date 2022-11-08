@@ -207,6 +207,39 @@ function check_constraints(arr_constraints::Vector{Constraint}, arr_points::Vect
 end
 
 """
+
+# Description
+
+TODO
+
+
+# Argument
+- `arr_lines::Vector{LineEq}`: TODO
+- `arr_constraints::Vector{Constraint}`: TODO
+
+# Return
+
+- `::Vector{Tuple{LineEq,LineEq,Constraint,Constraint}}`
+"""
+function make_pairs(arr_lines::Vector{LineEq}, arr_constraints::Vector{Constraint})::Vector{Tuple{LineEq,LineEq,Constraint,Constraint}}
+
+    len::Int32 = length(arr_lines)
+
+    arr_pairs::Vector{Tuple{LineEq,LineEq,Constraint,Constraint}} = []
+
+    for (idx_1,) in 1:len-1
+        for (idx_2,) in idx_1+1:len
+
+            push!(arr_pairs, (arr_lines[idx_1], arr_lines[idx_2], arr_constraints[idx_1], arr_constraints[idx_2]))
+
+        end
+    end
+
+    return arr_pairs
+
+end
+
+"""
 # Description
 
 Function that, given a certain x value and y value, evaluates the result of the targeted function 
