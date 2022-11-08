@@ -257,3 +257,79 @@ function get_result(p::Point)::Float64
 
     return res
 end
+
+"""
+# Description
+
+Function that finds the intersect at which the problem is maximized and prints out the result
+as well as the corresponding point to the standard output
+
+
+# Argument
+- `arr_points::Vector{Point}`: a vector of points
+
+# Return type
+- `::Nothing`
+"""
+function max_val(arr_points::Vector{Point})::Nothing
+
+    max_point::Point = Point(0, 0)
+
+    inter_value::Float64 = 0
+    maximum_value::Float64 = 0
+
+    for (id, p) in enumerate(arr_points)
+
+        inter_value = get_result(p)
+
+        if id == 1
+            maximum_value = get_result(p)
+        end
+
+        if inter_value >= maximum_value
+            max_point = p
+            maximum_value = inter_value
+        end
+    end
+
+    println("La valeur MAXIMALE est égale à: $maximum_value. Elle correspond au POINT: $max_point")
+
+end
+
+
+"""
+# Description
+
+Function that finds the intersect at which the problem is minimized and prints out the result
+as well as the corresponding point to the standard output
+
+# Argument
+- `arr_points::Vector{Point}`: a vector of points
+
+# Return type
+- `::Nothing`
+"""
+function min_val(arr_points::Vector{Point})::Nothing
+
+    min_point::Point = Point(0, 0)
+
+    inter_value::Float64 = 0
+    minimum_value::Float64 = 0
+
+
+    for (id, p) in enumerate(arr_points)
+
+        inter_value = get_result(p)
+
+        if id == 1
+            minimum_value = get_result(p)
+        end
+
+        if inter_value <= minimum_value
+            min_point = p
+            minimum_value = inter_value
+        end
+    end
+
+    println("La valeur MINIMALE est égale à: $minimum_value. Elle correspond au POINT: $min_point")
+end
