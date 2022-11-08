@@ -20,20 +20,20 @@ include("functions.jl")
 # f(x, y) = 315x + 205y - 10
 
 # # 2ème exercice
-f(x, y) = 4x + 3y + 25
+# f(x, y) = 4x + 3y + 25
 
-constraints::Vector{Constraint} = [
-    Constraint(1, 2, 14),
-    Constraint(10, 10, 100),
-    Constraint(20, 10, 190),
-    Constraint(4, 0, 37),
-    Constraint(0, 1, 6),
-    Constraint(-4, 1, 4),
-    Constraint(-5, -5, -10),
-    Constraint(-25, -15, -40),
-    Constraint(-1, 0, 0),
-    Constraint(0, -1, 0)
-]
+# constraints::Vector{Constraint} = [
+#     Constraint(1, 2, 14),
+#     Constraint(10, 10, 100),
+#     Constraint(20, 10, 190),
+#     Constraint(4, 0, 37),
+#     Constraint(0, 1, 6),
+#     Constraint(-4, 1, 4),
+#     Constraint(-5, -5, -10),
+#     Constraint(-25, -15, -40),
+#     Constraint(-1, 0, 0),
+#     Constraint(0, -1, 0)
+# ]
 
 ######################################
 
@@ -41,16 +41,16 @@ constraints::Vector{Constraint} = [
 ######## Révision - Exam blanc #######
 
 # Fonction à optimiser
-# f(x, y) = -20x + 10y + 5
+f(x, y) = -20x + 10y + 5
 
-# constraints::Vector{Constraint} = [
-#     Constraint(1, 1, 20),
-#     Constraint(-3, 1, 0),
-#     Constraint(-2, 3, 20),
-#     Constraint(-2, -2, -10),
-#     Constraint(9, -3, 75),
-#     Constraint(0, -1, 0)
-# ]
+constraints::Vector{Constraint} = [
+    Constraint(1, 1, 20),
+    Constraint(-3, 1, 0),
+    Constraint(-2, 3, 20),
+    Constraint(-2, -2, -10),
+    Constraint(9, -3, 75),
+    Constraint(0, -1, 0)
+]
 
 ######################################
 
