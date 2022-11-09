@@ -31,7 +31,7 @@ function get_lineEq(c::Constraint)::LineEq
         res::Float64 = 0
         arr = [getproperty(line, :a), (-1) * getproperty(line, :b)]
 
-        res = round(arr[2] / arr[1], digits=1)
+        res = arr[2] / arr[1]
 
         line.x_intercept = Point(res, 0)
         return line
@@ -105,14 +105,14 @@ function line_intersect(tup::Tuple{LineEq,LineEq,Constraint,Constraint})::Point
         #GENERAL SOLUTION
         pX::Float64 = (b_prime - b) / (a - a_prime)
 
-        y_for_l1 = round(a * pX + b, digits=3)
-        y_for_l2 = round(a_prime * pX + b_prime, digits=3)
+        y_for_l1 = trunc(a * pX + b, digits=10)
+        y_for_l2 = trunc(a_prime * pX + b_prime, digits=10)
 
         if y_for_l1 == y_for_l2
 
             pY::Float64 = y_for_l1
-            return Point(round(pX, digits=3), round(pY, digits=3))
 
+            return Point(round(pX, digits=10), round(pY, digits=10))
         end
 
     else
@@ -130,23 +130,27 @@ function line_intersect(tup::Tuple{LineEq,LineEq,Constraint,Constraint})::Point
 
             res::Float64 = numerator / denom
 
-            return Point(round(res, digits=3), round(l1.b, digits=3))
+            return Point(res, l1.b)
+
 
         end
 
         if !(isdefined(l2, :x_intercept))
 
-            return Point(round((l2.b + ((-1) * l1.b)) / l1.a, digits=3), round(l2.b, digits=3))
+            return Point((l2.b + ((-1) * l1.b)) / l1.a, l2.b)
+
         end
 
         if !(isdefined(l1, :y_intercept))
 
-            return Point(l1.a, round(l2.a * l1.a + l2.b, digits=3))
+            return Point(l1.a, l2.a * l1.a + l2.b)
+
         end
 
         if !(isdefined(l2, :y_intercept))
 
-            return Point(l2.a, round(l1.a * l2.a + l1.b, digits=3))
+            return Point(l2.a, l1.a * l2.a + l1.b)
+
         end
 
     end
@@ -174,7 +178,7 @@ function check_constraints(arr_constraints::Vector{Constraint}, arr_points::Vect
     for i in arr_constraints
         while cmpt <= length(arr_points)
 
-            tmp = round(getproperty(i, :u) * getproperty(arr_points[cmpt], :x) + getproperty(i, :v) * getproperty(arr_points[cmpt], :y), digits=2)
+            tmp = round(getproperty(i, :u) * getproperty(arr_points[cmpt], :x) + getproperty(i, :v) * getproperty(arr_points[cmpt], :y), digits=3)
 
             if tmp <= getproperty(i, :w)
 
