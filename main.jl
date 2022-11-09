@@ -1,6 +1,7 @@
 include("functions.jl")
 
-######### Exo - Glacier ##############
+#region Exo - Glacier
+######################################
 
 # Fonction à optimiser
 # f(x, y) = 30x + 40y
@@ -12,9 +13,10 @@ include("functions.jl")
 # ]
 
 ######################################
+#endregion
 
-
-############ Defi - TP0 ##############
+#region Défi - TPO
+######################################
 
 # 1er exercice
 # f(x, y) = 315x + 205y - 10
@@ -36,9 +38,10 @@ include("functions.jl")
 # ]
 
 ######################################
+#endregion
 
-
-######## Révision - Exam blanc #######
+#region Révision - Exam blanc
+######################################
 
 # Fonction à optimiser
 f(x, y) = -20x + 10y + 5
@@ -53,7 +56,7 @@ constraints::Vector{Constraint} = [
 ]
 
 ######################################
-
+#endregion
 
 lines::Vector{LineEq} = []
 intersects::Vector{Point} = []
