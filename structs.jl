@@ -21,7 +21,7 @@ mutable struct LineEq
     x_intercept::Point
     y_intercept::Point
     LineEq() = new()
-    LineEq(a, b) = new(round(a, digits=3), round(b, digits=3), Point(), Point(0, round(b, digits=3)))
+    LineEq(a, b) = new(a, b, Point(), Point(0, b))
 end
 
 
